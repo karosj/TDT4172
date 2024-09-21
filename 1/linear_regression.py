@@ -2,35 +2,30 @@ import numpy as np
 
 class LinearRegression():
     
-    def __init__(self):
-        # NOTE: Feel free to add any hyperparameters 
-        # (with defaults) as you see fit
-        pass
+    def __init__(self, learning_rate=0.001, n_iters=1000):
+        self.lr = learning_rate
+        self.n_iters = n_iters
+        self.beta = 0
+        self.beta_1 = 0
+        
         
     def fit(self, X, y):
-        """
-        Estimates parameters for the classifier
+        X = np.array(X)
+        y = np.array(y)
         
-        Args:
-            X (array<m,n>): a matrix of floats with
-                m rows (#samples) and n columns (#features)
-            y (array<m>): a vector of floats
-        """
-        # TODO: Implement
-        raise NotImplementedError("The fit method is not implemented yet.")
+        m = len(y)
+
+        # gradient descent
+        for _ in range(self.n_iters):
+            y_pred = self.beta + self.beta_1 * X
+
+            dtheta = 1 / m * np.sum(y_pred - y)
+            theta2 = 1 / m * np.sum((y_pred - y) * X)
+
+            self.beta -= self.lr * dtheta
+            self.beta_1 -= self.lr * theta2
+
     
     def predict(self, X):
-        """
-        Generates predictions
-        
-        Note: should be called after .fit()
-        
-        Args:
-            X (array<m,n>): a matrix of floats with 
-                m rows (#samples) and n columns (#features)
-            
-        Returns:
-            A length m array of floats
-        """
-        # TODO: Implement
-        raise NotImplementedError("The predict method is not implemented yet.")
+        X = np.array(X)
+        return self.beta + self.beta_1 * X
